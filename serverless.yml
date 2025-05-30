@@ -1,0 +1,15 @@
+org: rafaapcode
+service: api
+
+provider:
+  name: aws
+  region: sa-east-1
+  runtime: nodejs20.x
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
