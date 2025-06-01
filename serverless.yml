@@ -4,12 +4,26 @@ service: api
 provider:
   name: aws
   region: sa-east-1
-  runtime: nodejs20.x
+  runtime: nodejs22.x
+  memorySize: 128
+
+package:
+  individually: true
+
+build:
+  esbuild:
+    bundle: true
+    minify: true
+    sourcemap: false
+    exclude:
+      - '@aws-sdk/*'
+    external:
+      - '@aws-sdk/*'
 
 functions:
   hello:
-    handler: handler.hello
+    handler: src/hello.handler
     events:
       - httpApi:
           path: /
-          method: get
+          method: GET
