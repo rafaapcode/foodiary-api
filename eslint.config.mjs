@@ -23,6 +23,7 @@ export default defineConfig([
       curly: ['error', 'all'],
       'no-duplicate-imports': 'error',
       'no-console': 'warn',
+      '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/naming-convention': [
         'error',
         {
@@ -38,4 +39,9 @@ export default defineConfig([
   },
   { files: ['**/*.{js,mjs,cjs,ts,mts,cts}'], languageOptions: { globals: globals.node } },
   tseslint.configs.recommended,
+  {
+    rules: {
+      '@typescript-eslint/no-namespace': 'off',
+    },
+  },
 ]);
