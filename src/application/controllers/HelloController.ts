@@ -7,13 +7,13 @@ const schema = z.object({
 });
 
 export class HelloController extends Controller<unknown> {
-  async handle(request: Controller.Request<{hello: true}>): Promise<Controller.Response<unknown>> {
-    const parsedBody = schema.parse(request.body);
+  protected override schema = schema;
 
+  protected override async handle(request: Controller.Request<{hello: true}>): Promise<Controller.Response<unknown>> {
     return {
       statusCode: 200,
       body: {
-        parsedBody,
+        parsedBody: request.body,
       },
     };
   }

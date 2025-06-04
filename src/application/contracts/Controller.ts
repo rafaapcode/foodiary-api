@@ -1,8 +1,14 @@
+import { z } from 'zod';
+
 export abstract class Controller<TBody = undefined> {
-  protected abstract handle(params: Controller.Request): Promise<Controller.Response<TBody>>;
-  public execute(params: Controller.Request): Promise<Controller.Response<TBody>> {
-    console.log('Executou !');
-    return this.handle(params);
+  protected schema?: z.ZodSchema;
+
+  protected abstract handle(request: Controller.Request): Promise<Controller.Response<TBody>>;
+  public execute(request: Controller.Request): Promise<Controller.Response<TBody>> {
+    if(this.schema) {
+      this.schema.parse(request.body);
+    }
+    return this.handle(request);
   }
 }
 
