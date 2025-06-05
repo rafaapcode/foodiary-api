@@ -8,6 +8,12 @@
    "noImplicitOverride": true,
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "paths": {
+      "@application/*": ["src/application/*"],
+      "@kernel/*": ["src/kernel/*"],
+      "@main/*": ["src/main/*"]
+    }
   }
 }
