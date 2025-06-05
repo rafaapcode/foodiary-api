@@ -8,6 +8,6 @@ export function lambdaBodyParser(body: APIGatewayProxyEventV2['body']) {
 
     return JSON.parse(body);
   } catch {
-    throw new BadRequest('Bad Request');
+    throw new BadRequest('Malformed Body');
   }
 }
