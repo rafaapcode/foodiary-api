@@ -10,7 +10,7 @@ export class Registry {
       throw new Error(`"${token}" is already registered in the registry`);
     }
 
-    const paramTypes = Reflect.getMetadata('design:paramTypes', impl) ?? [];
+    const paramTypes = Reflect.getMetadata('design:paramtypes', impl) ?? [];
     const deps = paramTypes.filter(Boolean);
 
     this.providers.set(token, { impl, deps });
