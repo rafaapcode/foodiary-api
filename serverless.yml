@@ -21,3 +21,10 @@ functions:
       - httpApi:
           path: /hello/{id}
           method: POST
+
+Resources:
+  resources:
+    UserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: foodiary-api-dev-UserPool
