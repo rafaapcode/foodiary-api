@@ -1,9 +1,15 @@
+import { AuthGayeway } from '@infra/gateways/AuthGateway';
 import { Injectable } from '@kernel/decorators/Injectable';
 
 @Injectable()
 export class SignUpUseCase {
+  constructor(private readonly authGateway: AuthGayeway) {}
+
   async execute(input: SignUpUseCase.Input): Promise<SignUpUseCase.OutPut> {
-    console.log(input);
+    const { externalId } = await this.authGateway.signUp(input);
+
+    // Salvar no DB externalId
+
     return {
       accessToken: '',
       refreshToken: '',
