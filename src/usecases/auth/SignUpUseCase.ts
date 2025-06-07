@@ -6,13 +6,13 @@ export class SignUpUseCase {
   constructor(private readonly authGateway: AuthGateway) {}
 
   async execute(input: SignUpUseCase.Input): Promise<SignUpUseCase.OutPut> {
-    const { externalId } = await this.authGateway.signUp(input);
+    await this.authGateway.signUp(input);
 
-    // Salvar no DB externalId
+    const { accessToken, refreshToken } = await this.authGateway.signIn(input);
 
     return {
-      accessToken: '',
-      refreshToken: '',
+      accessToken,
+      refreshToken,
     };
   }
 }
