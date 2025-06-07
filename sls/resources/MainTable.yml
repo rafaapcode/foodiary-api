@@ -1,4 +1,4 @@
-Resource:
+Resources:
   MainTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -8,18 +8,27 @@ Resource:
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
         RecoveryPeriodInDays: 35
-      AttributeDefinition:
+      AttributeDefinitions:
         - AttributeName: PK
-          AttributeType: s
+          AttributeType: S
         - AttributeName: SK
           AttributeType: S
         - AttributeName: GSI1PK
-          AttributeType: s
+          AttributeType: S
         - AttributeName: GSI1SK
-          AttributeType: s
+          AttributeType: S
       KeySchema:
         - AttributeName: PK
           KeyType: HASH
         - AttributeName: SK
           KeyType: RANGE
       GlobalSecondaryIndexes:
+        - IndexName: GSI1
+          Projection:
+            ProjectionType: ALL
+          KeySchema:
+            - AttributeName: GSI1PK
+              KeyType: HASH
+            - AttributeName: GSI1SK
+              KeyType: RANGE
+
