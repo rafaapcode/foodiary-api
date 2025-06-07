@@ -1,4 +1,4 @@
-import { ErrorCode } from './ErrorCode';
+import { ErrorCode } from '../ErrorCode';
 import { HttpError } from './HttpError';
 
 export class InternalServerError extends HttpError {
