@@ -15,6 +15,7 @@ package:
 custom:
   cognito:
     PoolName: ${self:service}-${self:provider.stage}-UserPool
+    MainTableName: ${self:service}-${self:provider.stage}-MainTable
 
 build:
   esbuild:

@@ -1,0 +1,25 @@
+Resource:
+  MainTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      TableName: ${self:custom.cognito.MainTableName}
+      DeletionProtectionEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+        RecoveryPeriodInDays: 35
+      AttributeDefinition:
+        - AttributeName: PK
+          AttributeType: s
+        - AttributeName: SK
+          AttributeType: S
+        - AttributeName: GSI1PK
+          AttributeType: s
+        - AttributeName: GSI1SK
+          AttributeType: s
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
