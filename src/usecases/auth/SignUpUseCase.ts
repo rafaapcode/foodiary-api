@@ -1,14 +1,22 @@
+import { Account } from '@application/entities/Account';
+import { AccountRepository } from '@infra/database/dynamo/repositories/AccountRepository';
 import { AuthGateway } from '@infra/gateways/AuthGateway';
 import { Injectable } from '@kernel/decorators/Injectable';
 
 @Injectable()
 export class SignUpUseCase {
-  constructor(private readonly authGateway: AuthGateway) {}
+  constructor(
+    private readonly authGateway: AuthGateway,
+    private readonly accountRepo: AccountRepository,
+  ) {}
 
-  async execute(input: SignUpUseCase.Input): Promise<SignUpUseCase.OutPut> {
-    await this.authGateway.signUp(input);
+  async execute({ email, password }: SignUpUseCase.Input): Promise<SignUpUseCase.OutPut> {
+    const { externalId } = await this.authGateway.signUp({ email, password });
 
-    const { accessToken, refreshToken } = await this.authGateway.signIn(input);
+    const account = new Account({ email, externalId });
+    await this.accountRepo.create(account);
+
+    const { accessToken, refreshToken } = await this.authGateway.signIn({ email, password });
 
     return {
       accessToken,
@@ -21,10 +29,10 @@ export namespace SignUpUseCase {
   export type Input = {
     email: string;
     password: string;
-  }
+  };
 
   export type OutPut = {
     accessToken: string;
     refreshToken: string;
-  }
+  };
 }
