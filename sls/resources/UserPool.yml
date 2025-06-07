@@ -27,6 +27,7 @@ Resources:
     Type: AWS::Cognito::UserPoolClient
     Properties:
       ClientName: ${self:service}-${self:provider.stage}-UserPoolClient
+      GenerateSecret: true
       UserPoolId: !Ref UserPool
       ExplicitAuthFlows:
         - ALLOW_USER_PASSWORD_AUTH
