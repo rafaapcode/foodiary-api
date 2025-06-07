@@ -6,6 +6,7 @@ provider:
   region: sa-east-1
   runtime: nodejs22.x
   memorySize: 128
+  stage: ${opt:stage, 'dev'}
 
 package:
   individually: true
@@ -22,9 +23,6 @@ functions:
           path: /hello/{id}
           method: POST
 
-Resources:
-  resources:
-    UserPool:
-      Type: AWS::Cognito::UserPool
-      Properties:
-        UserPoolName: foodiary-api-dev-UserPool
+resources:
+  - ${file(./sls/resources/UserPool.yml)}
+
