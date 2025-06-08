@@ -11,18 +11,15 @@ export class SingInUseCase {
     email,
     password,
   }: SingInUseCase.Input): Promise<SingInUseCase.OutPut> {
-    const response = {
-      accessToken: '',
-      refreshToken: '',
-    };
-
     try {
       const { accessToken, refreshToken } = await this.authGateway.signIn({
         email,
         password,
       });
-      response.accessToken = accessToken;
-      response.refreshToken = refreshToken;
+      return {
+        accessToken,
+        refreshToken,
+      };
     } catch (error) {
       if(error instanceof UserNotFoundException || error instanceof NotAuthorizedException) {
         throw new InvalidCredentials();
@@ -30,8 +27,6 @@ export class SingInUseCase {
 
       throw error;
     }
-
-    return response;
   }
 }
 
