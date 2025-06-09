@@ -19,7 +19,7 @@ export function lambdaHttpAdapter(controller: Controller<unknown>) {
       const queryParams = event.queryStringParameters ?? {};
 
       if('authorizer' in event.requestContext) {
-        // event.requestContext.authorizer.jwt
+        console.log(JSON.stringify(event.requestContext.authorizer.jwt.claims.internalId, null, 2));
       }
 
       const response = await controller.execute({
