@@ -1,7 +1,12 @@
+import { InvalidCredentials } from '@application/errors/application/InvalidCredentials';
+import { InvalidRefreshToken } from '@application/errors/application/InvalidRefreshToken';
 import {
   GetTokensFromRefreshTokenCommand,
   InitiateAuthCommand,
+  NotAuthorizedException,
+  RefreshTokenReuseException,
   SignUpCommand,
+  UserNotFoundException,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { Injectable } from '@kernel/decorators/Injectable';
 import { AppConfig } from '@shared/config/AppConfig';
@@ -42,7 +47,8 @@ export class AuthGateway {
     email,
     password,
   }: AuthGateway.SignInParams): Promise<AuthGateway.SignInResult> {
-    const command = new InitiateAuthCommand({
+    try {
+      const command = new InitiateAuthCommand({
       AuthFlow: 'USER_PASSWORD_AUTH',
       ClientId: this.appConfig.auth.cognito.client.id,
       AuthParameters: {
@@ -65,10 +71,18 @@ export class AuthGateway {
       accessToken: AuthenticationResult.AccessToken,
       refreshToken: AuthenticationResult.RefreshToken,
     };
+    } catch (error) {
+         if(error instanceof UserNotFoundException || error instanceof NotAuthorizedException) {
+          throw new InvalidCredentials();
+        }
+
+        throw error;
+    }
   }
 
   async refreshToken({ refreshToken }: AuthGateway.RefreshTokenParams): Promise<AuthGateway.RefreshTokenResult> {
-    const command = new GetTokensFromRefreshTokenCommand({
+    try {
+      const command = new GetTokensFromRefreshTokenCommand({
       ClientId: this.appConfig.auth.cognito.client.id,
       RefreshToken: refreshToken,
       ClientSecret: this.appConfig.auth.cognito.client.secret,
@@ -87,6 +101,17 @@ export class AuthGateway {
       accessToken: AuthenticationResult.AccessToken,
       refreshToken: AuthenticationResult.RefreshToken,
     };
+    } catch (error) {
+      if(error instanceof UserNotFoundException || error instanceof NotAuthorizedException) {
+        throw new InvalidCredentials();
+      }
+
+      if(error instanceof RefreshTokenReuseException) {
+        throw new InvalidRefreshToken();
+      }
+
+      throw error;
+    }
   }
 
   private getSecretHash(email: string): string {

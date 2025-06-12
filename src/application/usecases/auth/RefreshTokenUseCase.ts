@@ -1,5 +1,3 @@
-import { InvalidCredentials } from '@application/errors/application/InvalidCredentials';
-import { NotAuthorizedException, UserNotFoundException } from '@aws-sdk/client-cognito-identity-provider';
 import { AuthGateway } from '@infra/gateways/AuthGateway';
 import { Injectable } from '@kernel/decorators/Injectable';
 
@@ -10,21 +8,13 @@ export class RefreshTokenUseCase {
   async execute({
     refreshToken,
   }: RefreshTokenUseCase.Input): Promise<RefreshTokenUseCase.OutPut> {
-    try {
-      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await this.authGateway.refreshToken({
+     const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await this.authGateway.refreshToken({
         refreshToken,
       });
       return {
         accessToken: newAccessToken,
         refreshToken: newRefreshToken,
       };
-    } catch (error) {
-      if(error instanceof UserNotFoundException || error instanceof NotAuthorizedException) {
-        throw new InvalidCredentials();
-      }
-
-      throw error;
-    }
   }
 }
 

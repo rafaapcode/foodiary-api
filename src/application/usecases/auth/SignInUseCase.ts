@@ -1,5 +1,3 @@
-import { InvalidCredentials } from '@application/errors/application/InvalidCredentials';
-import { NotAuthorizedException, UserNotFoundException } from '@aws-sdk/client-cognito-identity-provider';
 import { AuthGateway } from '@infra/gateways/AuthGateway';
 import { Injectable } from '@kernel/decorators/Injectable';
 
@@ -11,8 +9,7 @@ export class SingInUseCase {
     email,
     password,
   }: SingInUseCase.Input): Promise<SingInUseCase.OutPut> {
-    try {
-      const { accessToken, refreshToken } = await this.authGateway.signIn({
+     const { accessToken, refreshToken } = await this.authGateway.signIn({
         email,
         password,
       });
@@ -20,13 +17,6 @@ export class SingInUseCase {
         accessToken,
         refreshToken,
       };
-    } catch (error) {
-      if(error instanceof UserNotFoundException || error instanceof NotAuthorizedException) {
-        throw new InvalidCredentials();
-      }
-
-      throw error;
-    }
   }
 }
 
