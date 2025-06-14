@@ -8,7 +8,11 @@ export class ForgotPasswordUseCase {
   async execute({
     email,
   }: ForgotPassword.Input): Promise<ForgotPassword.OutPut> {
-    await this.authGateway.forgotPassword({ email });
+    try {
+      await this.authGateway.forgotPassword({ email });
+    } catch  {
+      // handle error for security
+    }
   }
 }
 
