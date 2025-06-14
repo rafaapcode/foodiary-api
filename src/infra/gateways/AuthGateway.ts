@@ -1,6 +1,7 @@
 import { InvalidCredentials } from '@application/errors/application/InvalidCredentials';
 import { InvalidRefreshToken } from '@application/errors/application/InvalidRefreshToken';
 import {
+  ConfirmForgotPasswordCommand,
   ForgotPasswordCommand,
   GetTokensFromRefreshTokenCommand,
   InitiateAuthCommand,
@@ -124,6 +125,17 @@ export class AuthGateway {
     await cognitoClient.send(command);
   }
 
+  async confirmForgotPassword({ email, password, confirmationCode }: AuthGateway.ConfirmForgotPasswordParams): Promise<void> {
+    const command = new ConfirmForgotPasswordCommand({
+      ClientId: this.appConfig.auth.cognito.client.id,
+      Username: email,
+      Password: password,
+      ConfirmationCode: confirmationCode,
+      SecretHash: this.getSecretHash(email),
+    });
+    await cognitoClient.send(command);
+  }
+
   private getSecretHash(email: string): string {
     const { id, secret } = this.appConfig.auth.cognito.client;
     return createHmac('SHA256', secret).update(`${email}${id}`).digest('base64');
@@ -162,5 +174,11 @@ export namespace AuthGateway {
 
   export type ForgotPassword = {
     email: string;
+  };
+
+   export type ConfirmForgotPasswordParams = {
+    email: string;
+    confirmationCode: string;
+    password: string;
   };
 }
