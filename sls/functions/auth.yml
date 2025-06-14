@@ -46,6 +46,6 @@ preSignUpTrigger:
 
 # Trigger is configured manually to support event v2
 # See UserPool.yml for the configuration
-# Do not change the name of this FN , withou change the UserPool.yml config
+# Do not change the name of this FN , without change the UserPool.yml config
 preTokenGenerationTrigger:
   handler: src/main/functions/auth/preTokenGenerationTrigger.handler

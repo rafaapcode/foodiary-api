@@ -1,3 +1,4 @@
+import { BadRequest } from '@application/errors/http/BadRequest';
 import { AuthGateway } from '@infra/gateways/AuthGateway';
 import { Injectable } from '@kernel/decorators/Injectable';
 
@@ -10,7 +11,11 @@ export class ConfirmForgotPasswordUseCase {
     confirmationCode,
     password,
   }: ConfirmForgotPasswordUseCase.Input): Promise<ConfirmForgotPasswordUseCase.OutPut> {
-    await this.authGateway.confirmForgotPassword({ email, confirmationCode, password });
+    try {
+      await this.authGateway.confirmForgotPassword({ email, confirmationCode, password });
+    } catch  {
+      throw new BadRequest('Failed, Try again');
+    }
   }
 }
 
