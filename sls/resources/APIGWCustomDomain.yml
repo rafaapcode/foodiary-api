@@ -16,4 +16,10 @@ Resources:
           SecurityPolicy: TLS_1_2
           CertificateArn: !Ref APIGWCustomDomainCertificate
 
+  APIGWCustomDomainMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Properties:
+      ApiId: !Ref HttpApi
+      DomainName: !Ref APIGWCustomDomain
+      Stage: $default
 
