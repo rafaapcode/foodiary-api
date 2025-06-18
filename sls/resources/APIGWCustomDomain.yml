@@ -5,3 +5,15 @@ Resources:
       DomainName: ${env:API_DOMAIN_NAME}
       ValidationMethod: DNS
 
+  APIGWCustomDomain:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: ${env:API_DOMAIN_NAME}
+      RoutingMode: API_MAPPING_ONLY
+      DomainNameConfigurations:
+        - EndpointType: REGIONAL
+          IpAddressType: ipv4
+          SecurityPolicy: TLS_1_2
+          CertificateArn: !Ref APIGWCustomDomainCertificate
+
+
