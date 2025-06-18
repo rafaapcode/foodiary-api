@@ -1,0 +1,7 @@
+Resources:
+  APIGWCustomDomainCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: ${env:API_DOMAIN_NAME}
+      ValidationMethod: DNS
+
