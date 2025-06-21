@@ -7,7 +7,7 @@ export class AccountItem {
   constructor(private readonly attrs: AccountItem.Attributes) {
     this.keys = {
       PK: AccountItem.getPK(this.attrs.id),
-      SK: AccountItem.getPK(this.attrs.id),
+      SK: AccountItem.getSK(this.attrs.id),
       GSI1PK: AccountItem.getGSI1PK(this.attrs.email),
       GSI1SK: AccountItem.getGSI1SK(this.attrs.email),
     };
