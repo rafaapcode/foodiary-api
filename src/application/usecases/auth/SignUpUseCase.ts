@@ -1,4 +1,5 @@
 import { Account } from '@application/entities/Account';
+import { Profile } from '@application/entities/Profile';
 import { EmailAlreadyInUse } from '@application/errors/application/EmailAlreadyInUse';
 import { AccountRepository } from '@infra/database/dynamo/repositories/AccountRepository';
 import { AuthGateway } from '@infra/gateways/AuthGateway';
@@ -11,21 +12,32 @@ export class SignUpUseCase {
     private readonly accountRepo: AccountRepository,
   ) {}
 
-  async execute({ email, password }: SignUpUseCase.Input): Promise<SignUpUseCase.OutPut> {
+  async execute({
+    account: { email, password },
+    profile,
+  }: SignUpUseCase.Input): Promise<SignUpUseCase.OutPut> {
+
     const emailAlreadyInUse = await this.accountRepo.findEmail(email);
 
-    if(emailAlreadyInUse) {
+    if (emailAlreadyInUse) {
       throw new EmailAlreadyInUse();
     }
 
     const account = new Account({ email });
-    const { externalId } = await this.authGateway.signUp({ email, password, internalId: account.id });
+    const { externalId } = await this.authGateway.signUp({
+      email,
+      password,
+      internalId: account.id,
+    });
 
     account.externalId = externalId;
 
     await this.accountRepo.create(account);
 
-    const { accessToken, refreshToken } = await this.authGateway.signIn({ email, password });
+    const { accessToken, refreshToken } = await this.authGateway.signIn({
+      email,
+      password,
+    });
 
     return {
       accessToken,
@@ -36,8 +48,19 @@ export class SignUpUseCase {
 
 export namespace SignUpUseCase {
   export type Input = {
-    email: string;
-    password: string;
+    account: {
+      email: string;
+      password: string;
+    };
+    profile: {
+      name: string;
+      birthDate: Date;
+      gender: Profile.Gender;
+      height: number;
+      weight: number;
+      activityLevel: Profile.ActivityLevel;
+      goal?: Profile.Goal;
+    };
   };
 
   export type OutPut = {
