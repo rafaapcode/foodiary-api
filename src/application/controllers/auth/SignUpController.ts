@@ -17,7 +17,7 @@ export class SignUpController extends Controller<'public', SignUpController.Resp
       accessToken,
       refreshToken,
     } = await this.signUpUseCase.execute({
-      account, profile,
+      account, profileInfo: profile,
     });
 
     return {

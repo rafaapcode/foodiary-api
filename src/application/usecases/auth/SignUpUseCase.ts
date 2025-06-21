@@ -1,7 +1,10 @@
 import { Account } from '@application/entities/Account';
+import { Goal } from '@application/entities/Goal';
 import { Profile } from '@application/entities/Profile';
 import { EmailAlreadyInUse } from '@application/errors/application/EmailAlreadyInUse';
 import { AccountRepository } from '@infra/database/dynamo/repositories/AccountRepository';
+import { GoalRepository } from '@infra/database/dynamo/repositories/GoalRepository';
+import { ProfileRepository } from '@infra/database/dynamo/repositories/ProfileRepository';
 import { AuthGateway } from '@infra/gateways/AuthGateway';
 import { Injectable } from '@kernel/decorators/Injectable';
 
@@ -10,11 +13,13 @@ export class SignUpUseCase {
   constructor(
     private readonly authGateway: AuthGateway,
     private readonly accountRepo: AccountRepository,
+    private readonly profileRepo: ProfileRepository,
+    private readonly goalRepo: GoalRepository,
   ) {}
 
   async execute({
     account: { email, password },
-    profile,
+    profileInfo,
   }: SignUpUseCase.Input): Promise<SignUpUseCase.OutPut> {
 
     const emailAlreadyInUse = await this.accountRepo.findEmail(email);
@@ -24,6 +29,18 @@ export class SignUpUseCase {
     }
 
     const account = new Account({ email });
+    const profile = new Profile({
+      ...profileInfo,
+      accountId: account.id,
+    });
+    const goal = new Goal({
+      accountId: account.id,
+      calories: 2500,
+      proteins: 120,
+      carbohydrates: 300,
+      fats: 70,
+    });
+
     const { externalId } = await this.authGateway.signUp({
       email,
       password,
@@ -32,7 +49,11 @@ export class SignUpUseCase {
 
     account.externalId = externalId;
 
-    await this.accountRepo.create(account);
+    await Promise.all([
+      this.accountRepo.create(account),
+      this.profileRepo.create(profile),
+      this.goalRepo.create(goal),
+    ]);
 
     const { accessToken, refreshToken } = await this.authGateway.signIn({
       email,
@@ -52,7 +73,7 @@ export namespace SignUpUseCase {
       email: string;
       password: string;
     };
-    profile: {
+    profileInfo: {
       name: string;
       birthDate: Date;
       gender: Profile.Gender;
