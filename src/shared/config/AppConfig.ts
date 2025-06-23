@@ -13,6 +13,9 @@ export class AppConfig {
           id: env.COGNITO_CLIENT_ID,
           secret: env.COGNITO_CLIENT_SECRET,
         },
+        poll: {
+          id: env.COGNITO_POOL_ID,
+        },
       },
     };
 
@@ -30,6 +33,9 @@ export namespace AppConfig {
       client: {
         id: string;
         secret: string;
+      }
+      poll: {
+        id: string;
       }
     };
   };
