@@ -13,7 +13,7 @@ export const signUpSchema = z.object({
     height: z.number().min(0, '"height" must be a positive number'),
     weight: z.number().min(0, '"height" must be a positive number'),
     activityLevel: z.nativeEnum(Profile.ActivityLevel),
-    goal: z.nativeEnum(Profile.Goal).optional(),
+    goal: z.nativeEnum(Profile.Goal),
   }),
 });
 

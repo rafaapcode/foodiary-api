@@ -8,7 +8,7 @@ export class Profile {
   height: number;
   weight: number;
   activityLevel: Profile.ActivityLevel;
-  goal?: Profile.Goal;
+  goal: Profile.Goal;
 
   readonly createdAt: Date;
 
@@ -37,7 +37,7 @@ export namespace Profile {
     height: number;
     weight: number;
     activityLevel: Profile.ActivityLevel;
-    goal?: Profile.Goal;
+    goal: Profile.Goal;
   }
 
   export enum Gender {

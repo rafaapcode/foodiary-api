@@ -85,7 +85,7 @@ export namespace SignUpUseCase {
       height: number;
       weight: number;
       activityLevel: Profile.ActivityLevel;
-      goal?: Profile.Goal;
+      goal: Profile.Goal;
     };
   };
 
