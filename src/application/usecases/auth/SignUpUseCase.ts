@@ -2,6 +2,7 @@ import { Account } from '@application/entities/Account';
 import { Goal } from '@application/entities/Goal';
 import { Profile } from '@application/entities/Profile';
 import { EmailAlreadyInUse } from '@application/errors/application/EmailAlreadyInUse';
+import { GoalCalculator } from '@application/services/GoalCalculator';
 import { AccountRepository } from '@infra/database/dynamo/repositories/AccountRepository';
 import { SignUpUnitOfWork } from '@infra/database/dynamo/UnitOfwork/SignUpUnitOfWork';
 import { AuthGateway } from '@infra/gateways/AuthGateway';
@@ -33,12 +34,15 @@ export class SignUpUseCase {
         ...profileInfo,
         accountId: account.id,
       });
+
+      const { calories, carbohydrates, fats, proteins } = GoalCalculator.calculate(profile);
+
       const goal = new Goal({
         accountId: account.id,
-        calories: 2500,
-        proteins: 120,
-        carbohydrates: 300,
-        fats: 70,
+        calories,
+        proteins,
+        carbohydrates,
+        fats,
       });
 
       const { externalId } = await this.authGateway.signUp({

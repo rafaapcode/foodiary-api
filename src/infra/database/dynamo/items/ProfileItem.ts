@@ -66,7 +66,7 @@ export namespace ProfileItem {
     height: number;
     weight: number;
     activityLevel: Profile.ActivityLevel;
-    goal?: Profile.Goal
+    goal: Profile.Goal
   };
 
   export type ItemType = Keys & Attributes & {
