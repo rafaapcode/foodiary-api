@@ -23,7 +23,7 @@ export class SignUpUseCase {
     profileInfo,
   }: SignUpUseCase.Input): Promise<SignUpUseCase.OutPut> {
     return this.saga.run(async () => {
-      const emailAlreadyInUse = await this.accountRepo.findEmail(email);
+      const emailAlreadyInUse = await this.accountRepo.findByEmail(email);
 
       if (emailAlreadyInUse) {
         throw new EmailAlreadyInUse();

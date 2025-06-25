@@ -17,7 +17,7 @@ export class AccountRepository {
     };
   }
 
-  async findEmail(email: string): Promise<Account | null> {
+  async findByEmail(email: string): Promise<Account | null> {
     const command = new QueryCommand({
       IndexName: 'GSI1',
       TableName: this.appConfig.database.dynamodb.mainTable,
