@@ -28,7 +28,7 @@ export class Meal {
     this.icon = attr.name;
     this.foods = attr.foods;
     this.accountId = attr.accountId;
-    this.createdAt = attr.cratedAt ?? new Date();
+    this.createdAt = attr.createdAt ?? new Date();
   }
 }
 
@@ -43,7 +43,7 @@ export namespace Meal {
     foods: Meal.Food[];
     inputType: Meal.InputType;
     id?: string;
-    cratedAt?: Date;
+    createdAt?: Date;
   };
 
   export enum Status {
