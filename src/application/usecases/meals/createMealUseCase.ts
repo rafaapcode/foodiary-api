@@ -11,7 +11,7 @@ export class CreateMealUseCase{
       accountId,
       inputFileKey: 'INPUT_FILE_KEY_EXAMPLE',
       status: Meal.Status.UPLOADING,
-      inputType: file.type,
+      inputType: file.inputType,
     });
 
     await this.mealRepo.create(meal);
@@ -26,7 +26,7 @@ export namespace CreateMealUseCase {
   export type Input = {
     accountId: string;
     file: {
-      type: Meal.InputType;
+      inputType: Meal.InputType;
       size: number;
     }
   };

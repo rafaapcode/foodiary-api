@@ -1,8 +1,11 @@
+import { mbToBytes } from '@shared/utils/mbToBytes';
 import z from 'zod';
 
 export const createMealSchema = z.object({
-  password: z.string().min(8, 'Password should be at least 8 charcteres long'),
-  email: z.string().min(1, 'Email is required').email('Invalid email'),
+  file: z.object({
+    type: z.enum(['audio/m4a', 'image/jpeg']),
+    size: z.number().min(1, 'The file should haave at least 1 byte').max(mbToBytes(10), 'The file should have up to 10mb'),
+  }),
 });
 
-export type CreateMealSchemaBody = z.infer<typeof createMealSchema>;
+export type CreateMealBody = z.infer<typeof createMealSchema>;
