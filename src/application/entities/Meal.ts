@@ -21,12 +21,12 @@ export class Meal {
   constructor(attr: Meal.Attributes) {
     this.id = attr.id ?? KSUID.randomSync().string;
     this.status = attr.status;
-    this.attempts = attr.attempts;
+    this.attempts = attr.attempts  ?? 0;
     this.inputType = attr.inputType;
     this.inputFileKey = attr.inputFileKey;
-    this.name = attr.name;
-    this.icon = attr.name;
-    this.foods = attr.foods;
+    this.name = attr.name ?? '';
+    this.icon = attr.icon ?? '';
+    this.foods = attr.foods ?? [];
     this.accountId = attr.accountId;
     this.createdAt = attr.createdAt ?? new Date();
   }
@@ -36,18 +36,18 @@ export namespace Meal {
   export type Attributes = {
     accountId: string;
     status: Meal.Status;
-    attempts: number;
+    attempts?: number;
     inputFileKey: string;
-    name: string;
-    icon: string;
-    foods: Meal.Food[];
+    name?: string;
+    icon?: string;
+    foods?: Meal.Food[];
     inputType: Meal.InputType;
     id?: string;
     createdAt?: Date;
   };
 
   export enum Status {
-    PENDING = 'PENDING',
+    UPLOADING = 'UPLOADING',
     QUEUED = 'QUEUED',
     PROCESSING = 'PROCESSING',
     SUCCESS = 'SUCCESS',
