@@ -19,6 +19,7 @@ export class ListMealsByDayQuery {
       KeyConditionExpression: '#GSI1PK = :GSI1PK',
       ProjectionExpression: '#GSI1PK, #id, #createdAt, #foods, #icon, #name',
       FilterExpression: '#status = :status',
+      ScanIndexForward: false,
       ExpressionAttributeNames: {
         '#GSI1PK': 'GSI1PK',
         '#id': 'id',
