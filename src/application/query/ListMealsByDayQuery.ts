@@ -18,6 +18,7 @@ export class ListMealsByDayQuery {
       IndexName: 'GSI1',
       KeyConditionExpression: '#GSI1PK = :GSI1PK',
       ProjectionExpression: '#GSI1PK, #id, #createdAt, #foods, #icon, #name',
+      FilterExpression: '#status = :status',
       ExpressionAttributeNames: {
         '#GSI1PK': 'GSI1PK',
         '#id': 'id',
@@ -25,9 +26,11 @@ export class ListMealsByDayQuery {
         '#foods': 'foods',
         '#icon': 'icon',
         '#name': 'name',
+        '#status': 'status',
       },
       ExpressionAttributeValues: {
         ':GSI1PK': MealItem.getGSI1PK({ accountId, createdAt: date }),
+        ':status': Meal.Status.SUCCESS,
       },
     });
 
