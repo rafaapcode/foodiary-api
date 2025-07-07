@@ -2,7 +2,6 @@ import { Controller } from '@application/contracts/Controller';
 import { Meal } from '@application/entities/Meal';
 import { ListMealsByDayQuery } from '@application/query/ListMealsByDayQuery';
 import { Injectable } from '@kernel/decorators/Injectable';
-import { CreateMealBody } from './schemas/createMealSchema';
 import { listMealsByDaySchema } from './schemas/listMealsByDaySchema';
 
 @Injectable()
@@ -17,7 +16,7 @@ export class ListMealsByDayController extends Controller<
   protected override async handle({
     accountId,
     queryParams,
-  }: Controller.Request<'private', CreateMealBody>): Promise<
+  }: Controller.Request<'private'>): Promise<
     Controller.Response<ListMealsByDayController.Response>
   > {
     const { date } = listMealsByDaySchema.parse(queryParams);
