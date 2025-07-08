@@ -44,4 +44,5 @@ resources:
   - ${file(./sls/resources/MainTable.yml)}
   - ${file(./sls/resources/APIGWCustomDomain.yml)}
   - ${file(./sls/resources/MealsBucket.yml)}
+  - ${file(./sls/resources/MealsBucketCDN.yml)}
 
