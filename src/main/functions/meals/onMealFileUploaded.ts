@@ -1,5 +1,9 @@
-import { S3Event } from 'aws-lambda';
+import 'reflect-metadata';
 
-export async function handler(event: S3Event) {
-  console.log(JSON.stringify(event, null, 2));
-}
+import { MealFileUploadedEventHandler } from '@application/events/files/MealFileUploadedEventHandler';
+import { Registry } from '@kernel/di/registry';
+import { lambdaS3Adapter } from '@main/adapters/lambdaS3Adapter';
+
+const eventHandler = Registry.getInstance().resolve(MealFileUploadedEventHandler);
+
+export const handler = lambdaS3Adapter(eventHandler);
