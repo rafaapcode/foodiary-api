@@ -1,9 +1,9 @@
 import { IFIleEventHandler } from '@application/contracts/IFileEventHandler';
 import { S3Handler } from 'aws-lambda';
 
-export async function lambdaS3Adapter(
+export function lambdaS3Adapter(
   eventHandler: IFIleEventHandler,
-): Promise<S3Handler> {
+): S3Handler {
   return async (event) => {
     const responses = await Promise.allSettled(
       event.Records.map((record) =>
