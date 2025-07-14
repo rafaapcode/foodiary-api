@@ -21,7 +21,7 @@ export class MealRepository {
     await dynamoClient.send(new PutCommand(this.getPutCommand(meal)));
   }
 
-   async findById({ mealId, accountId }: MealRepository.FindByIdParams): Promise<Meal | null> {
+  async findById({ mealId, accountId }: MealRepository.FindByIdParams): Promise<Meal | null> {
     const command = new GetCommand({
       TableName: this.appConfig.database.dynamodb.mainTable,
       Key: {

@@ -34,6 +34,7 @@ export class CreateMealUseCase {
           size: file.size,
           inputType: file.inputType,
         },
+        accountId: accountId,
         mealId: meal.id,
       }),
     ]);
