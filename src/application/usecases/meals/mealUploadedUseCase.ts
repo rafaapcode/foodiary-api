@@ -1,3 +1,4 @@
+import { Meal } from '@application/entities/Meal';
 import { ResourceNotFound } from '@application/errors/application/ResourceNotFound';
 import { MealRepository } from '@infra/database/dynamo/repositories/MealRepository';
 import { MealsFileStorageGateway } from '@infra/gateways/MealsFileStorageGateway';
@@ -22,7 +23,9 @@ export class MealUploadedUseCase {
       throw new ResourceNotFound('Meal not found.');
     };
 
-    console.log(meal);
+    meal.status = Meal.Status.QUEUED;
+
+    await this.mealRepo.save(meal);
   }
 }
 

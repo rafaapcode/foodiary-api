@@ -7,8 +7,8 @@ export class Meal {
   status: Meal.Status;
 
   attempts: number;
-  inputType: Meal.InputType;
-  inputFileKey: string;
+  readonly inputType: Meal.InputType;
+  readonly inputFileKey: string;
 
   name: string;
   icon: string;
