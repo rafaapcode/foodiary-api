@@ -24,7 +24,7 @@ Resources:
       MetricName: ApproximateNumberOfMessagesVisible
       Dimensions:
         - Name: QueueName
-          Value: !GetAtt MealsQueue.QueueName
+          Value: !GetAtt MealsDlq.QueueName
       Statistic: Average
       Period: 60
       EvaluationPeriods: 1
