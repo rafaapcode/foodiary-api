@@ -14,3 +14,4 @@ Resources:
     Properties:
       QueueName: ${self:service}-${self:provider.stage}-MealsDlq
       MessageRetentionPeriod: 1209600 # 14 days
+
