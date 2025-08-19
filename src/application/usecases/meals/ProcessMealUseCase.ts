@@ -1,7 +1,7 @@
 import { Meal } from '@application/entities/Meal';
 import { ResourceNotFound } from '@application/errors/application/ResourceNotFound';
 import { MealRepository } from '@infra/database/dynamo/repositories/MealRepository';
-import { MealsFileStorageGateway } from '@infra/gateways/MealsFileStorageGateway';
+import { MealsAIGateway } from '@infra/gateways/MealsAIGateway';
 import { Injectable } from '@kernel/decorators/Injectable';
 
 const MAX_ATTEMPTS = 2;
@@ -10,7 +10,8 @@ const MAX_ATTEMPTS = 2;
 export class ProcessMealUseCase {
   constructor(
     private readonly mealRepo: MealRepository,
-    private readonly mealFileStorageGw: MealsFileStorageGateway,
+    private readonly mealsAIGw: MealsAIGateway,
+
   ) {}
 
   async execute({
@@ -44,6 +45,8 @@ export class ProcessMealUseCase {
       await this.mealRepo.save(meal);
 
       // processa com ia
+      await this.mealsAIGw.processMeal(meal);
+
       meal.status = Meal.Status.SUCCESS;
       meal.name = 'Teste';
       meal.icon = '🥗';
