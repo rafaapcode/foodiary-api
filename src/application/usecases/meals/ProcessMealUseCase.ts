@@ -45,21 +45,12 @@ export class ProcessMealUseCase {
       await this.mealRepo.save(meal);
 
       // processa com ia
-      await this.mealsAIGw.processMeal(meal);
+      const { name, foods, icon } = await this.mealsAIGw.processMeal(meal);
 
       meal.status = Meal.Status.SUCCESS;
-      meal.name = 'Teste';
-      meal.icon = '🥗';
-      meal.foods = [
-        {
-          calories: 100,
-          carbohydrates: 200,
-          fats: 300,
-          name: 'pao',
-          proteins: 200,
-          quantity: '2 unidades',
-        },
-      ];
+      meal.name = name;
+      meal.icon = icon;
+      meal.foods = foods;
 
       await this.mealRepo.save(meal);
     } catch (error) {
