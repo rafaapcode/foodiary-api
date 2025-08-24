@@ -2,8 +2,9 @@
 import { Meal } from '@application/entities/Meal';
 import { getImagePrompt } from '@infra/ai/prompts/getImagePrompt';
 import { Injectable } from '@kernel/decorators/Injectable';
-import OpenAI from 'openai';
+import OpenAI, { toFile } from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
+import { downloadFileFromURL } from 'src/utils/downloadFileFromUrl';
 import { z } from 'zod';
 import { MealsFileStorageGateway } from './MealsFileStorageGateway';
 
@@ -27,8 +28,8 @@ export class MealsAIGateway {
   private readonly client = new OpenAI();
 
   async processMeal(meal: Meal): Promise<MealsAIGateway.ProcessMealResult> {
-    if(meal.inputType === Meal.InputType.PICTURE){
-      const image = this.mealsFileStorageGateway.getFileURL(meal.inputFileKey);
+    const mealFileUrl = this.mealsFileStorageGateway.getFileURL(meal.inputFileKey);
+    if(meal.inputType === Meal.InputType.PICTURE){;
       const response = await this.client.chat.completions.create({
         model: 'gpt-4.1-mini',
         messages: [
@@ -42,7 +43,7 @@ export class MealsAIGateway {
               {
                 type: 'image_url',
                 image_url: {
-                  url: image,
+                  url: mealFileUrl,
                   detail: 'high',
                 },
               },
@@ -72,6 +73,14 @@ export class MealsAIGateway {
 
       return data;
     }
+
+    const audioFile = await downloadFileFromURL(mealFileUrl);
+    const openAiFile = await toFile(audioFile, 'audio.m4a', { type: 'audio/m4a' });
+
+    const res = await this.client.audio.transcriptions.create({
+      model: 'whisper-1',
+      file: openAiFile,
+    });
 
     return {
       foods: [],
