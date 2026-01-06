@@ -76,17 +76,12 @@ src/
 - **ksuid** - Geração de IDs únicos ordenados cronologicamente
 - **ts-dedent** - Formatação de strings multilinhas
 
-## 🌎 Região
-
-A aplicação está deployada na região **sa-east-1** (São Paulo) da AWS.
-
-
 ## 🎯 Funcionalidades Principais
 
 - Autenticação de usuários (SignIn, SignUp, Refresh Token, Reset Password)
 - Gerenciamento de perfil e metas nutricionais
 - Criação e listagem de refeições
-- **Análise nutricional automatizada** via IA (texto ou imagem)
+- **Análise nutricional automatizada** via IA (audio ou imagem)
 - Cálculo automático de macronutrientes
 - Armazenamento seguro de imagens de refeições
 - Processamento assíncrono via filas
